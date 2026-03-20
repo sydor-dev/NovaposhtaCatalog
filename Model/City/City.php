@@ -42,8 +42,8 @@ class City extends AbstractExtensibleModel implements CityInterface
         AttributeValueFactory $customAttributeFactory,
         Json $jsonSerializer,
         \ReflectionClassFactory $reflectionClassFactory,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct(

@@ -39,8 +39,8 @@ class Warehouse extends \Magento\Framework\Model\AbstractExtensibleModel impleme
         AttributeValueFactory $customAttributeFactory,
         \Magento\Framework\Serialize\Serializer\Json $jsonSerializer,
         \ReflectionClassFactory $reflectionClassFactory,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        ?\Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
+        ?\Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct(
