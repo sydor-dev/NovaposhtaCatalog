@@ -9,13 +9,13 @@ interface CityRepositoryInterface
 {
     /**
      * @param string $cityName
-     * @return array<\Perspective\NovaposhtaCatalog\Model\City\City>
+     * @return \Perspective\NovaposhtaCatalog\Model\City\City[]
      */
     public function getCityByName(string $cityName);
 
     /**
      * @param string $cityName
-     * @return \Perspective\NovaposhtaCatalog\Model\ResourceModel\City\City\Collection<\Perspective\NovaposhtaCatalog\Model\City\City>
+     * @return \Perspective\NovaposhtaCatalog\Model\ResourceModel\City\City\Collection
      */
     public function getCityCollectionByName(string $cityName);
 
