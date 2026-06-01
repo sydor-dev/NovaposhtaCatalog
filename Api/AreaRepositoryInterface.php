@@ -16,13 +16,13 @@ interface AreaRepositoryInterface
 
     /**
      * @param string $areaName
-     * @return \Perspective\NovaposhtaCatalog\Model\Area\Area[]
+     * @return array<\Perspective\NovaposhtaCatalog\Model\Area\Area>
      */
     public function getAreasByName(string $areaName);
 
     /**
      * @param string $areaName
-     * @return \Perspective\NovaposhtaCatalog\Model\ResourceModel\Area\Area\Collection
+     * @return \Perspective\NovaposhtaCatalog\Model\ResourceModel\Area\Area\Collection<\Perspective\NovaposhtaCatalog\Model\Area\Area>
      */
     public function getAreaCollectionByName(string $areaName);
 

@@ -9,11 +9,9 @@ use Magento\Framework\Controller\ResultFactory;
 class AreaData extends Action
 {
     public function __construct(
-        Context $context,
-        ResultFactory $resultFactory
+        Context $context
     ) {
         parent::__construct($context);
-        $this->resultFactory = $resultFactory;
     }
 
     protected function _isAllowed()

@@ -19,11 +19,9 @@ class Area extends Action
 
     public function __construct(
         Context $context,
-        ResultFactory $resultFactory,
         AreaUpdate $areaUpdate
     ) {
         $this->areaUpdate = $areaUpdate;
-        $this->resultFactory = $resultFactory;
         parent::__construct($context);
     }
 
