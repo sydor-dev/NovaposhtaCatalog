@@ -210,6 +210,14 @@
                     </depends>
                 </field>
             </group>
+            <group id="directory_map" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Directory Map</label>
+                <field id="sync" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Ranges</label>
+                    <frontend_model>Perspective\NovaposhtaCatalog\Block\Adminhtml\Form\Field\DirectoryMap</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+            </group>
         </section>
     </system>
 </config>

@@ -1,45 +1,39 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Perspective\NovaposhtaCatalog\Controller\Adminhtml\MassAction;
 
+use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Ui\Component\MassAction\Filter;
-use Perspective\NovaposhtaCatalog\Model\ResourceModel\Warehouse\Warehouse\CollectionFactory;
-use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\ResultFactory;
+use Magento\Ui\Component\MassAction\Filter;
+use Perspective\NovaposhtaCatalog\Model\ResourceModel\Area\Area\CollectionFactory;
 
-/**
- * Class Delete
- * Truncate @see \Perspective\NovaposhtaShipping\Api\Data\ShippingWarehouseInterface::DATABASE_TABLE_NAME
- */
-class Delete extends \Magento\Backend\App\Action
+class DeleteArea extends Action
 {
+    /**
+     * @var \Magento\Ui\Component\MassAction\Filter
+     */
+    protected Filter $filter;
 
     /**
-     * @var Filter
+     * @var \Perspective\NovaposhtaCatalog\Model\ResourceModel\Area\Area\CollectionFactory
      */
-    protected $filter;
+    protected CollectionFactory $collectionFactory;
 
-    /**
-     * @var CollectionFactory
-     */
-    protected $collectionFactory;
-
-    /**
-     * @param Context $context
-     * @param Filter $filter
-     * @param CollectionFactory $collectionFactory
-     */
-    public function __construct(Context $context, Filter $filter, CollectionFactory $collectionFactory)
-    {
+    public function __construct(
+        Context $context,
+        Filter $filter,
+        CollectionFactory $collectionFactory
+    ) {
         $this->filter = $filter;
         $this->collectionFactory = $collectionFactory;
         parent::__construct($context);
     }
 
     /**
-     * Dispatch request
-     *
      * @return \Magento\Framework\Controller\ResultInterface|ResponseInterface
      * @throws \Magento\Framework\Exception\LocalizedException
      */
