@@ -12,6 +12,8 @@ use Perspective\NovaposhtaCatalog\Model\Update\Area as AreaUpdate;
  */
 class Area extends Action
 {
+    public const ADMIN_RESOURCE = 'Perspective_NovaposhtaCatalog::NovaposhtaCatalog';
+
     /**
      * @var \Perspective\NovaposhtaCatalog\Model\Update\Area
      */

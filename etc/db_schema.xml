@@ -106,9 +106,9 @@
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="id"/>
         </constraint>
-        <index referenceId="PERSPECTIVE_NOVAPOSHTA_CATALOG_AREAS_REF" indexType="btree">
+        <constraint xsi:type="unique" referenceId="PERSPECTIVE_NOVAPOSHTA_CATALOG_AREAS_REF">
             <column name="ref"/>
-        </index>
+        </constraint>
     </table>
     <table name="perspective_novaposhta_catalog_street" resource="default" engine="innodb"
            comment="NovaPoshta Street entity">

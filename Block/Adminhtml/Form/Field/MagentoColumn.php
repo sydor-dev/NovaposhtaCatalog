@@ -56,7 +56,10 @@ class MagentoColumn extends Select
     private function getSourceOptions(): array
     {
         $select = $this->resourceConnection->getConnection()->select();
-        $select->from('directory_country_region', ['code', 'default_name']);
+        $select->from(
+            $this->resourceConnection->getTableName('directory_country_region'),
+            ['code', 'default_name']
+        );
         $select->where('country_id = ?', 'UA');
         $select->order('default_name');
         $options = $this->resourceConnection->getConnection()->fetchPairs($select);

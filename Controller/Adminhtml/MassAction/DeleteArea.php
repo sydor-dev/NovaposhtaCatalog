@@ -6,13 +6,16 @@ namespace Perspective\NovaposhtaCatalog\Controller\Adminhtml\MassAction;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Ui\Component\MassAction\Filter;
 use Perspective\NovaposhtaCatalog\Model\ResourceModel\Area\Area\CollectionFactory;
 
-class DeleteArea extends Action
+class DeleteArea extends Action implements HttpPostActionInterface
 {
+    public const ADMIN_RESOURCE = 'Perspective_NovaposhtaCatalog::NovaposhtaCatalog';
+
     /**
      * @var \Magento\Ui\Component\MassAction\Filter
      */

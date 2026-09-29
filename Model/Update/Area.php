@@ -2,6 +2,7 @@
 
 namespace Perspective\NovaposhtaCatalog\Model\Update;
 
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Serialize\SerializerInterface;
 use Perspective\NovaposhtaCatalog\Api\Data\UpdateEntityInterface;
 use Perspective\NovaposhtaCatalog\Helper\Config;
@@ -85,22 +86,25 @@ class Area implements UpdateEntityInterface
         $message = "Error has been occur";
         $error = true;
         if ($this->configHelper->isEnabled()) {
-            $areasListFromApiEndpoint = $this->getDataFromEndpoint();
-            if (property_exists($areasListFromApiEndpoint, 'success') && $areasListFromApiEndpoint->success === true) {
-                try {
+            try {
+                $areasListFromApiEndpoint = $this->getDataFromEndpoint();
+                if (is_object($areasListFromApiEndpoint)
+                    && property_exists($areasListFromApiEndpoint, 'success')
+                    && $areasListFromApiEndpoint->success === true
+                ) {
                     $message = 'In Progress..';
-                    $this->setDataToDB($areasListFromApiEndpoint->data);
+                    $this->setDataToDB($areasListFromApiEndpoint->data ?? null);
                     $error = false;
-                } catch (\Exception $e) {
-                    $message = $e->getMessage();
-                    $this->logger->critical($e->getMessage(), ['exception' => $e]);
                 }
+            } catch (\Throwable $e) {
+                $message = $e->getMessage();
+                $this->logger->critical($e->getMessage(), ['exception' => $e]);
+            }
 
-                if (!$error) {
-                    $message = "Successfully synced";
-                    $this->cronSyncDateLastUpdate
-                        ->updateSyncDate(CronSyncDateLastUpdate::XML_PATH_LAST_SYNC_AREAS);
-                }
+            if (!$error) {
+                $message = "Successfully synced";
+                $this->cronSyncDateLastUpdate
+                    ->updateSyncDate(CronSyncDateLastUpdate::XML_PATH_LAST_SYNC_AREAS);
             }
         }
         return [
@@ -137,39 +141,53 @@ class Area implements UpdateEntityInterface
     {
         $data = $params[0];
 
+        $models = [];
+        foreach (is_iterable($data) ? $data : [] as $datum) {
+            if (is_object($datum) && !empty($datum->Ref)) {
+                $models[] = $this->prepareData($datum);
+            }
+        }
+        // An empty snapshot would delete every stored area below, so refuse to reconcile against it
+        if (empty($models)) {
+            throw new LocalizedException(__('Nova Poshta returned no areas, sync aborted.'));
+        }
+
         $collection = $this->areaResourceModelCollectionFactory->create();
         $existingByRef = [];
         foreach ($collection as $item) {
             $existingByRef[$item->getRef()] = $item->getId();
         }
 
-        $touchedIds = [];
-        foreach ($data as $datum) {
-            if (!is_object($datum)) {
-                continue;
+        $connection = $this->areaResourceModel->getConnection();
+        $connection->beginTransaction();
+        try {
+            $touchedIds = [];
+            foreach ($models as $model) {
+                $ref = $model->getRef();
+
+                if (isset($existingByRef[$ref])) {
+                    $model->setId($existingByRef[$ref]);
+                    $touchedIds[] = $existingByRef[$ref];
+                }
+
+                $this->areaResourceModel->save($model);
+
+                if (!isset($existingByRef[$ref])) {
+                    $touchedIds[] = (int)$model->getId();
+                }
             }
-            $model = $this->prepareData($datum);
-            $ref = $model->getRef();
 
-            if (isset($existingByRef[$ref])) {
-                $model->setId($existingByRef[$ref]);
-                $touchedIds[] = $existingByRef[$ref];
+            $idsToDelete = array_diff(array_values($existingByRef), $touchedIds);
+            if (!empty($idsToDelete)) {
+                $connection->delete(
+                    $this->areaResourceModel->getMainTable(),
+                    ['id IN (?)' => $idsToDelete]
+                );
             }
-
-            $this->areaResourceModel->save($model);
-
-            if (!isset($existingByRef[$ref])) {
-                $touchedIds[] = (int)$model->getId();
-            }
-        }
-
-        $idsToDelete = array_diff(array_values($existingByRef), $touchedIds);
-        if (!empty($idsToDelete)) {
-            $connection = $this->areaResourceModel->getConnection();
-            $connection->delete(
-                $this->areaResourceModel->getMainTable(),
-                ['id IN (?)' => $idsToDelete]
-            );
+            $connection->commit();
+        } catch (\Throwable $e) {
+            $connection->rollBack();
+            throw $e;
         }
     }
 
