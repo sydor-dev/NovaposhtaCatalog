@@ -131,6 +131,37 @@
         </arguments>
     </virtualType>
 
+    <virtualType name="Perspective\NovaposhtaCatalog\Grid\SyncButton\Areas" type="Perspective\NovaposhtaCatalog\Block\Adminhtml\Grid\SyncButton">
+        <arguments>
+            <argument name="route" xsi:type="string">novaposhtacatalog/sync/area</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Perspective\NovaposhtaCatalog\Grid\SyncButton\Cities" type="Perspective\NovaposhtaCatalog\Block\Adminhtml\Grid\SyncButton">
+        <arguments>
+            <argument name="route" xsi:type="string">novaposhtacatalog/sync/city</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Perspective\NovaposhtaCatalog\Grid\SyncButton\Streets" type="Perspective\NovaposhtaCatalog\Block\Adminhtml\Grid\SyncButton">
+        <arguments>
+            <argument name="route" xsi:type="string">novaposhtacatalog/sync/streets</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Perspective\NovaposhtaCatalog\Grid\SyncButton\Warehouses" type="Perspective\NovaposhtaCatalog\Block\Adminhtml\Grid\SyncButton">
+        <arguments>
+            <argument name="route" xsi:type="string">novaposhtacatalog/sync/warehouse</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Perspective\NovaposhtaCatalog\Grid\SyncButton\WarehouseTypes" type="Perspective\NovaposhtaCatalog\Block\Adminhtml\Grid\SyncButton">
+        <arguments>
+            <argument name="route" xsi:type="string">novaposhtacatalog/sync/warehousetype</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Perspective\NovaposhtaCatalog\Grid\SyncButton\PackageTypes" type="Perspective\NovaposhtaCatalog\Block\Adminhtml\Grid\SyncButton">
+        <arguments>
+            <argument name="route" xsi:type="string">novaposhtacatalog/sync/package</argument>
+        </arguments>
+    </virtualType>
+
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
